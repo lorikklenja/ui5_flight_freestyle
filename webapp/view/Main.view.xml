@@ -1,37 +1,42 @@
 <mvc:View controllerName="sapui5flightlk.controller.Main"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
+
     <Page id="page" title="{i18n>title}">
+
+        <headerContent>
+            <OverflowToolbar id="_IDGenOverflowToolbar2">
+                <Title id="_IDGenTitle1" text="Airlines ({= ${flightDataModel>/}.length })" level="H2"/>
+                <ToolbarSpacer id="_IDGenToolbarSpacer1"/>
+                <Button id="_IDGenButton3" icon="sap-icon://refresh" tooltip="Refresh" press=".onRefresh"/>
+                <Button id="_IDGenButton4" icon="sap-icon://excel-attachment" tooltip="Export to Excel" press=".onExport"/>
+            </OverflowToolbar>
+        </headerContent>
+
         <Table
-		items="{
-			path: 'flightDataModel>/'
-		}">
-		<headerToolbar>
-			<OverflowToolbar>
-				<Title text="Airlines" level="H2"/>
-				<ToolbarSpacer/>
-			</OverflowToolbar>
-		</headerToolbar>
-		<columns>
-			<Column>
-				<Text text="{i18n>carrid}" />
-			</Column>
-			<Column>
-				<Text text="{i18n>carrname}" />
-			</Column>
-			<Column>
-				<Text text="{i18n>url}" />
-			</Column>
-		</columns>
-		<items>
-			<ColumnListItem vAlign="Middle" type="Navigation">
-				<cells>
-					<Text text="{flightDataModel>Carrid}" wrapping="false" />
-					<Text text="{flightDataModel>Carrname}" wrapping="false"/>
-					<Text text="{flightDataModel>Url}" />
-				</cells>
-			</ColumnListItem>
-		</items>
-	</Table>
+            id="flightTable"
+            inset="false"
+            items="{path: 'flightDataModel>/'}"
+            growing="true"
+            growingThreshold="5"
+            growingScrollToLoad="false">
+
+            <columns>
+                <Column id="_IDGenColumn8"><Text id="_IDGenText14" text="{i18n>carrid}" /></Column>
+                <Column id="_IDGenColumn9"><Text id="_IDGenText15" text="{i18n>carrname}" /></Column>
+                <Column id="_IDGenColumn10"><Text id="_IDGenText16" text="{i18n>url}" /></Column>
+            </columns>
+
+            <items>
+                <ColumnListItem id="_IDGenColumnListItem1" vAlign="Middle" type="Navigation" press=".onRowPress" 
+					highlight="{= ${flightDataModel>Url} ? 'Information' : 'None' }">
+                    <cells>
+                        <Text id="_IDGenText17" text="{flightDataModel>Carrid}" wrapping="false" />
+                        <Text id="_IDGenText18" text="{flightDataModel>Carrname}" wrapping="false"/>
+                        <Text id="_IDGenText19" text="{flightDataModel>Url}" />
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
     </Page>
 </mvc:View>

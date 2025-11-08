@@ -1,0 +1,65 @@
+<mvc:View
+    controllerName="sapui5flightlk.controller.FlightDetails"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    displayBlock="true">
+
+    <Page id="_IDGenPage1" title="Flight Details" showNavButton="true" navButtonPress=".onNavBack">
+        <headerContent>
+            <Button id="_IDGenButton" icon="sap-icon://home" tooltip="Go Home" press=".onNavHome" />
+            <Button id="_IDGenButton1" icon="sap-icon://refresh" tooltip="Refresh" press=".onRefresh" />
+            <Button id="_IDGenButton2" icon="sap-icon://excel-attachment" tooltip="Export to Excel" press=".onExport" />
+        </headerContent>
+
+        <content>
+            <VBox id="_IDGenVBox" class="sapUiSmallMargin">
+                <SearchField id="_IDGenSearchField"
+                    width="100%"
+                    placeholder="Search by plane type, connection, or carrier..."
+                    liveChange=".onSearch"
+                    showRefreshButton="false" />
+
+                <Table
+                    id="flightDetailsTable"
+                    inset="false"
+                    growing="true"
+                    growingScrollToLoad="true"
+                    items="{flightDetailsModel>/}">
+                    
+                    <headerToolbar>
+                        <OverflowToolbar id="_IDGenOverflowToolbar">
+                            <Title id="_IDGenTitle" text="Flight Details" level="H2"/>
+                            <ToolbarSpacer id="_IDGenToolbarSpacer"/>
+                        </OverflowToolbar>
+                    </headerToolbar>
+
+                    <columns>
+                        <Column id="_IDGenColumn"><Text id="_IDGenText" text="{i18n>carrid}"/></Column>
+                        <Column id="_IDGenColumn1" minScreenWidth="Tablet" demandPopin="true"><Text id="_IDGenText1" text="{i18n>connid}"/></Column>
+                        <Column id="_IDGenColumn2" minScreenWidth="Tablet" demandPopin="true"><Text id="_IDGenText2" text="Date"/></Column>
+                        <Column id="_IDGenColumn3" minScreenWidth="Desktop" demandPopin="true"><Text id="_IDGenText3" text="Plane Type"/></Column>
+                        <Column id="_IDGenColumn4" minScreenWidth="Desktop" demandPopin="true"><Text id="_IDGenText4" text="Seats Max"/></Column>
+                        <Column id="_IDGenColumn5" minScreenWidth="Desktop" demandPopin="true"><Text id="_IDGenText5" text="Seats Occ"/></Column>
+                        <Column id="_IDGenColumn6" minScreenWidth="Desktop" demandPopin="true"><Text id="_IDGenText6" text="Price"/></Column>
+                        <Column id="_IDGenColumn7" hAlign="End"><Text id="_IDGenText21" text="Total Payment Sum"/></Column>
+                    </columns>
+
+                    <items>
+                        <ColumnListItem id="_IDGenColumnListItem">
+                            <cells>
+                                <Text id="_IDGenText7" text="{flightDetailsModel>Carrid}" />
+                                <Text id="_IDGenText8" text="{flightDetailsModel>Connid}" />
+                                <Text id="_IDGenText9" text="{flightDetailsModel>FldateFormatted}" />
+                                <Text id="_IDGenText10" text="{flightDetailsModel>PlaneType}" />
+                                <Text id="_IDGenText11" text="{flightDetailsModel>SeatsMax}" />
+                                <Text id="_IDGenText12" text="{flightDetailsModel>SeatsOcc}" />
+                                <Text id="_IDGenText13" text="{flightDetailsModel>Price} {flightDetailsModel>Currency}" />
+                                <Text id="_IDGenText20" text="{flightDetailsModel>PaymentSum} {flightDetailsModel>Currency}" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

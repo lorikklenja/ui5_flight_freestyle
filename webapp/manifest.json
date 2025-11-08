@@ -104,12 +104,21 @@
           "target": [
             "TargetMain"
           ]
+        },
+        {
+          "pattern": "FlightDetails/{Carrid}",
+          "name": "FlightDetails",
+          "target": "FlightDetails"
         }
       ],
       "targets": {
         "TargetMain": {
           "id": "Main",
           "name": "Main"
+        },
+        "FlightDetails": {
+          "id": "FlightDetails",
+          "name": "FlightDetails"
         }
       }
     },
