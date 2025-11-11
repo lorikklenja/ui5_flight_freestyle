@@ -16,10 +16,7 @@
         <Table
             id="flightTable"
             inset="false"
-            items="{path: 'flightDataModel>/'}"
-            growing="true"
-            growingThreshold="5"
-            growingScrollToLoad="false">
+            items="{path: 'flightDataModel>/'}">
 
             <columns>
                 <Column id="_IDGenColumn8"><Text id="_IDGenText14" text="{i18n>carrid}" /></Column>

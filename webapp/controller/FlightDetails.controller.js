@@ -5,12 +5,13 @@ sap.ui.define([
     "sap/ui/core/routing/History",
     "sap/m/MessageToast",
     "sap/ui/core/BusyIndicator",
-    "sap/ui/core/format/DateFormat",
-    "sap/ui/export/Spreadsheet"
-], (Controller, Filter, FilterOperator, History, MessageToast, BusyIndicator, DateFormat, Spreadsheet) => {
+    "sap/ui/export/Spreadsheet",
+    "sapui5flightlk/formatter/Formatter",
+], (Controller, Filter, FilterOperator, History, MessageToast, BusyIndicator, Spreadsheet, Formatter) => {
     "use strict";
 
     return Controller.extend("sapui5flightlk.controller.FlightDetails", {
+        formatter: Formatter,
         onInit: function () {
             const oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("FlightDetails").attachPatternMatched(this._onObjectMatched, this);
@@ -24,20 +25,12 @@ sap.ui.define([
 
             BusyIndicator.show(0);
 
-            const aFilters = [new Filter("Carrid", FilterOperator.EQ, sCarrid)];
-
-            oDataModel.read("/FlightDetailsLOR", {
-                filters: aFilters,
+            oDataModel.read("/FlightLK(Carrid='" + sCarrid + "',IsActiveEntity=true)", {
+                urlParameters: {
+                    "$expand": "to_FlightDetailsLOR"
+                },
                 success: (oResponse) => {
-                    const oDateFormat = DateFormat.getDateInstance({ pattern: "yyyy-MM-dd" });
-
-                    oResponse.results.forEach((item) => {
-                        if (item.Fldate) {
-                            item.FldateFormatted = oDateFormat.format(new Date(item.Fldate));
-                        }
-                    });
-
-                    oJSONModel.setData(oResponse.results);
+                    oJSONModel.setData(oResponse);
                     oView.setModel(oJSONModel, "flightDetailsModel");
                     BusyIndicator.hide();
                 },
