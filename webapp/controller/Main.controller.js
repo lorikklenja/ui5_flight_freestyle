@@ -64,9 +64,53 @@ sap.ui.define([
             }).finally(() => oSheet.destroy());
         },
 
-        onRefresh() {
-            MessageToast.show("Refreshing flight list...");
-            this._loadFlights();
+        onAddNewRecord: function () {
+            if (!this.oDialog) {
+                this.loadFragment({
+                    name: "sapui5flightlk.fragments.CreateAirline",
+                }).then(
+                    function (oDialog) {
+                        this.oDialog = oDialog;
+                        this.oDialog.open();
+                    }.bind(this)
+                );
+            } else {
+                this.oDialog.open();
+            }
+        },
+
+        onCancelRecord: function () {
+            this.oDialog.close();
+        },
+
+        onCreateNewRecord: function () {
+            var carrid = this.getView().byId("carrIDInput").getValue();
+            var carrname = this.getView().byId("carrNameInput").getValue();
+            var currcode = this.getView().byId("currCodeInput").getValue();
+            var url = this.getView().byId("URLInput").getValue();
+
+            var mParams = {
+                Carrid : carrid, 
+                Carrname : carrname, 
+                Currcode : currcode, 
+                Url : url
+            };
+
+            const oDataModel = this.getOwnerComponent().getModel();
+            BusyIndicator.show(0);
+
+            oDataModel.callFunction("/create_airline", {
+                method: "POST",
+                urlParameters: mParams,
+                success: (oResponse) => {
+                    MessageToast.show("Flight Created Succesfully");
+                    this.oDialog.close();
+                    this._loadFlights();
+                },
+                error: (oError) => {
+                    console.log(oError);
+                }
+            });
         }
     });
 });

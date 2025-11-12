@@ -510,6 +510,12 @@
                     <Parameter Name="Carrid" Type="Edm.String" Mode="In" MaxLength="3"/>
                     <Parameter Name="IsActiveEntity" Type="Edm.Boolean" Mode="In" sap:label="Is active"/>
                 </FunctionImport>
+                <FunctionImport Name="create_airline" ReturnType="cds_zui_flight_lk_o4.DummyFunctionImportResult" m:HttpMethod="POST">
+                    <Parameter Name="Carrid" Type="Edm.String" Mode="In" MaxLength="3" Nullable="true"/>
+                    <Parameter Name="Carrname" Type="Edm.String" Mode="In" MaxLength="20" Nullable="true"/>
+                    <Parameter Name="Currcode" Type="Edm.String" Mode="In" MaxLength="5" Nullable="true"/>
+                    <Parameter Name="Url" Type="Edm.String" Mode="In" MaxLength="255" Nullable="true"/>
+                </FunctionImport>
                 <FunctionImport Name="FlightLKDiscard" ReturnType="cds_zui_flight_lk_o4.DummyFunctionImportResult" m:HttpMethod="POST" sap:action-for="cds_zui_flight_lk_o4.FlightLKType">
                     <Parameter Name="Carrid" Type="Edm.String" Mode="In" MaxLength="3"/>
                     <Parameter Name="IsActiveEntity" Type="Edm.Boolean" Mode="In" sap:label="Is active"/>

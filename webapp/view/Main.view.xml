@@ -8,8 +8,8 @@
             <OverflowToolbar id="_IDGenOverflowToolbar2">
                 <Title id="_IDGenTitle1" text="Airlines ({= ${flightDataModel>/}.length })" level="H2"/>
                 <ToolbarSpacer id="_IDGenToolbarSpacer1"/>
-                <Button id="_IDGenButton3" icon="sap-icon://refresh" tooltip="Refresh" press=".onRefresh"/>
                 <Button id="_IDGenButton4" icon="sap-icon://excel-attachment" tooltip="Export to Excel" press=".onExport"/>
+                <Button id="_IDGenButton5" text="Create Airline" press=".onAddNewRecord" />
             </OverflowToolbar>
         </headerContent>
 
