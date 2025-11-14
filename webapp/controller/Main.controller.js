@@ -97,13 +97,14 @@ sap.ui.define([
             };
 
             const oDataModel = this.getOwnerComponent().getModel();
-            BusyIndicator.show(0);
+            this.oDialog.setBusy(true);
 
             oDataModel.callFunction("/create_airline", {
                 method: "POST",
                 urlParameters: mParams,
                 success: (oResponse) => {
-                    MessageToast.show("Flight Created Succesfully");
+                    this.oDialog.setBusy(false);
+                    MessageToast.show("Airline Created Succesfully");
                     this.oDialog.close();
                     this._loadFlights();
                 },
