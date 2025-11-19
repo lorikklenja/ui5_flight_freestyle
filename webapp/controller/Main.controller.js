@@ -112,6 +112,64 @@ sap.ui.define([
                     console.log(oError);
                 }
             });
+        },
+        editAirlineRecord: function () {
+            const oTable = this.byId("flightTable");
+            const oSelectedItem = oTable.getSelectedItem();
+
+            if (!oSelectedItem) {
+                MessageToast.show("Please select an airline first.");
+                return;
+            }
+
+            const oFlightModel = oSelectedItem.getBindingContext("flightDataModel");
+
+            if (!this._editDialog) {
+                this.loadFragment({
+                    name: "sapui5flightlk.fragments.EditAirline"
+                }).then(
+                    function (oDialog) {
+                        this._editDialog = oDialog;
+
+                        this._editDialog.setBindingContext(oFlightModel, "flightDataModel");
+
+                        this._editDialog.open();
+                    }.bind(this)
+                );
+            } else {
+                this._editDialog.open();
+            }
+        },
+
+        onSaveEditRecord: function() {
+            const oDataModel = this.getOwnerComponent().getModel();
+            const oCtx = this._editDialog.getBindingContext("flightDataModel");
+            const oUpdatedData = oCtx.getObject();
+            const sPath = `/FlightLK('${oUpdatedData.Carrid}')`;
+            const mParams = {
+                Carrid: oUpdatedData.Carrid,
+                Carrname: oUpdatedData.Carrname,
+                Currcode: oUpdatedData.Currcode,
+                Url: oUpdatedData.Url
+            };
+            
+            this._editDialog.setBusy(true);
+            oDataModel.update(sPath, mParams, {
+                success: () => {
+                    this._editDialog.setBusy(false);
+                    this._editDialog.close();
+                    MessageToast.show("Airline Updated Successfully");
+                    this._loadFlights();
+                },
+                error: (oError) => {
+                    this._editDialog.setBusy(false);
+                    MessageToast.show("Error updating airline");
+                }
+            });
+        },
+
+        onCancelEditRecord: function () {
+            this._editDialog.close();
         }
     });
 });

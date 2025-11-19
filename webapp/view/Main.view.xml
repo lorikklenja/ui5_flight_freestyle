@@ -10,12 +10,14 @@
                 <ToolbarSpacer id="_IDGenToolbarSpacer1"/>
                 <Button id="_IDGenButton4" icon="sap-icon://excel-attachment" tooltip="Export to Excel" press=".onExport"/>
                 <Button id="_IDGenButton5" text="Create Airline" press=".onAddNewRecord" />
+                <Button id="_IDGenButton6" text="Edit Airline" press=".editAirlineRecord" />
             </OverflowToolbar>
         </headerContent>
 
         <Table
             id="flightTable"
             inset="false"
+            mode="SingleSelectLeft"
             items="{path: 'flightDataModel>/'}">
 
             <columns>
