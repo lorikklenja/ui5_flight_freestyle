@@ -7,7 +7,8 @@ sap.ui.define([
     "sap/ui/core/BusyIndicator",
     "sap/ui/export/Spreadsheet",
     "sapui5flightlk/formatter/Formatter",
-], (Controller, Filter, FilterOperator, History, MessageToast, BusyIndicator, Spreadsheet, Formatter) => {
+    "sap/m/MessageBox",
+], (Controller, Filter, FilterOperator, History, MessageToast, BusyIndicator, Spreadsheet, Formatter, MessageBox) => {
     "use strict";
 
     return Controller.extend("sapui5flightlk.controller.FlightDetails", {
@@ -18,6 +19,10 @@ sap.ui.define([
         },
 
         _onObjectMatched: function (oEvent) {
+            this._loadFlightsDetails(oEvent);
+        },
+
+        _loadFlightsDetails(oEvent) {
             const sCarrid = oEvent.getParameter("arguments").Carrid;
             const oView = this.getView();
             const oDataModel = this.getOwnerComponent().getModel();
@@ -109,6 +114,38 @@ sap.ui.define([
                 this.getOwnerComponent().getRouter().navTo("RouteMain", {}, true);
             }
         },
+
+        onDeleteDetail: function (oEvent) {
+            const oDataModel = this.getOwnerComponent().getModel();
+            const oItem = oEvent.getSource().getParent(); 
+            const oCtx = oItem.getBindingContext("flightDetailsModel");
+
+            const sConnid = oCtx.getProperty("Connid");
+            const sCarrid = oCtx.getProperty("Carrid");
+            
+            var mParams = {
+                Carrid : sCarrid, 
+                Connid : sConnid
+            };
+            MessageBox.confirm("Delete this flight?", {
+                onClose: (action) => {
+                    if (action === "OK") {
+                        oDataModel.callFunction("/deleteFlightDetail", {
+                            method: "POST",
+                            urlParameters: mParams,
+                            success: (oResponse) => {
+                                MessageToast.show("Connection Deleted Succesfully");
+                                this._loadFlightsDetails();
+                            },
+                            error: (oError) => {
+                                console.log(oError);
+                            }
+                        });
+                    }
+                }
+            });
+        },
+
 
         onNavHome: function () {
             this.getOwnerComponent().getRouter().navTo("RouteMain");

@@ -86,6 +86,9 @@
 								<m:Column id="_IDGenColumn12"  minScreenWidth="Desktop" demandPopin="true"><m:Text id="_IDGenText29"  text="{i18n>maxTypeFrst}"/></m:Column>
 								<m:Column id="_IDGenColumn13"  minScreenWidth="Desktop" demandPopin="true"><m:Text id="_IDGenText30"  text="{i18n>occSeatsFrst}"/></m:Column>
 								<m:Column id="_IDGenColumn14"  hAlign="End"><m:Text id="_IDGenText7" text="Total Payment Sum"/></m:Column>
+								<m:Column id="_IDGenColumnDelete" hAlign="Center" width="4rem">
+									<m:Text id="_IDGenText32" text="Delete" />
+								</m:Column>
 							</m:columns>
 
 							<m:items>
@@ -103,6 +106,10 @@
 										<m:Text id="_IDGenText27" text="{flightDetailsModel>SeatsmaxF}" />
 										<m:Text id="_IDGenText28" text="{flightDetailsModel>SeatsoccF}" />
 										<m:Text id="_IDGenText21" text="{flightDetailsModel>PaymentSum}" />
+										<m:Button id="_IDGenButton2" 
+											icon="sap-icon://delete" 
+											type="Reject" 
+											press=".onDeleteDetail" />
 									</m:cells>
 								</m:ColumnListItem>
 							</m:items>

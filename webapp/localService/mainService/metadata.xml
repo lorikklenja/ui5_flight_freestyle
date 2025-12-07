@@ -124,7 +124,7 @@
                 <Property Name="Update_mc" Type="Edm.Boolean" sap:label="Dyn. Method Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="to_FlightDetailsLOR_oc" Type="Edm.Boolean" sap:label="Dynamic CbA-Control" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
                 <Property Name="Carrid" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="Airline Id" sap:updatable="false"/>
-                <Property Name="Carrname" Type="Edm.String" MaxLength="20" sap:label="Airline" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="Carrname" Type="Edm.String" MaxLength="20" sap:label="Airline"/>
                 <Property Name="Currcode" Type="Edm.String" MaxLength="5" sap:label="Currcode" sap:value-list="standard" sap:semantics="currency-code"/>
                 <Property Name="Url" Type="Edm.String" MaxLength="255" sap:label="Url"/>
                 <Property Name="LocalCreatedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Created By" sap:quickinfo="Created By User" sap:creatable="false" sap:updatable="false"/>
@@ -506,6 +506,10 @@
                     <End EntitySet="SAP__MyDocumentDescriptions" Role="FromRole_to_coverpage"/>
                     <End EntitySet="SAP__CoverPageSet" Role="ToRole_to_coverpage"/>
                 </AssociationSet>
+                <FunctionImport Name="deleteFlightDetail" ReturnType="cds_zui_flight_lk_o4.DummyFunctionImportResult" m:HttpMethod="POST">
+                    <Parameter Name="Carrid" Type="Edm.String" Mode="In" MaxLength="3" Nullable="true"/>
+                    <Parameter Name="Connid" Type="Edm.String" Mode="In" MaxLength="3" Nullable="true"/>
+                </FunctionImport>
                 <FunctionImport Name="FlightLKActivate" ReturnType="cds_zui_flight_lk_o4.FlightLKType" EntitySet="FlightLK" m:HttpMethod="POST" sap:action-for="cds_zui_flight_lk_o4.FlightLKType">
                     <Parameter Name="Carrid" Type="Edm.String" Mode="In" MaxLength="3"/>
                     <Parameter Name="IsActiveEntity" Type="Edm.Boolean" Mode="In" sap:label="Is active"/>
@@ -542,6 +546,7 @@
                         <PropertyValue Property="DiscardAction" String="cds_zui_flight_lk_o4.cds_zui_flight_lk_o4_Entities/FlightLKDiscard"/>
                         <PropertyValue Property="EditAction" String="cds_zui_flight_lk_o4.cds_zui_flight_lk_o4_Entities/FlightLKEdit"/>
                         <PropertyValue Property="PreparationAction" String="cds_zui_flight_lk_o4.cds_zui_flight_lk_o4_Entities/FlightLKPrepare"/>
+                        <PropertyValue Property="ResumeAction" String="cds_zui_flight_lk_o4.cds_zui_flight_lk_o4_Entities/FlightLKResume"/>
                     </Record>
                 </Annotation>
                 <Annotation Term="Capabilities.DeleteRestrictions">
@@ -638,11 +643,6 @@
                 </Annotation>
                 <Annotation Term="Capabilities.UpdateRestrictions">
                     <Record>
-                        <PropertyValue Property="NonUpdatableProperties">
-                            <Collection>
-                                <PropertyPath>Carrid</PropertyPath>
-                            </Collection>
-                        </PropertyValue>
                         <PropertyValue Property="NonUpdatableNavigationProperties">
                             <Collection>
                                 <PropertyPath>to_FlightDetailsLOR</PropertyPath>
@@ -733,11 +733,6 @@
                 </Annotation>
                 <Annotation Term="Capabilities.UpdateRestrictions">
                     <Record>
-                        <PropertyValue Property="NonUpdatableProperties">
-                            <Collection>
-                                <PropertyPath>Carrid</PropertyPath>
-                            </Collection>
-                        </PropertyValue>
                         <PropertyValue Property="NonUpdatableNavigationProperties">
                             <Collection>
                                 <PropertyPath>to_FlightLK</PropertyPath>
@@ -825,6 +820,75 @@
             <Annotations Target="cds_zui_flight_lk_o4.FlightLKType/to_FlightDetailsLOR" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.Composition"/>
             </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/Carrid" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/Connid" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/Currency" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/DraftEntityCreationDateTime" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/DraftEntityLastChangeDateTime" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/Fldate" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/HasActiveEntity" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/HasDraftEntity" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/IsActiveEntity" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/LastChangedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/LocalCreatedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/LocalCreatedBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/LocalLastChangedAt" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/LocalLastChangedBy" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/PaymentSum" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/PlaneType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/Price" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/SeatsMax" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/SeatsOcc" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/SeatsmaxB" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/SeatsmaxF" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/SeatsoccB" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
+            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/SeatsoccF" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="SAP__core.ComputedDefaultValue"/>
+            </Annotations>
             <Annotations Target="cds_zui_flight_lk_o4.cds_zui_flight_lk_o4_Entities/I_CurrencyStdVH" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Capabilities.DeleteRestrictions">
                     <Record>
@@ -892,50 +956,11 @@
                     </Record>
                 </Annotation>
             </Annotations>
-            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/Connid" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
-            </Annotations>
-            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/Currency" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
-            </Annotations>
-            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/Fldate" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
-            </Annotations>
-            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/PaymentSum" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
-            </Annotations>
-            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/PlaneType" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
-            </Annotations>
-            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/Price" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
-            </Annotations>
-            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/SeatsMax" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
-            </Annotations>
-            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/SeatsOcc" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
-            </Annotations>
-            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/SeatsmaxB" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
-            </Annotations>
-            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/SeatsmaxF" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
-            </Annotations>
-            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/SeatsoccB" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-                <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
-            </Annotations>
-            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/SeatsoccF" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <Annotations Target="cds_zui_flight_lk_o4.FlightLKType/Carrname" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
             </Annotations>
             <Annotations Target="cds_zui_flight_lk_o4.FlightLKType/Url" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Optional"/>
-            </Annotations>
-            <Annotations Target="cds_zui_flight_lk_o4.FlightDetailsLORType/Carrid" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-                <Annotation Term="SAP__core.Immutable"/>
-            </Annotations>
-            <Annotations Target="cds_zui_flight_lk_o4.FlightLKType/Carrid" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-                <Annotation Term="SAP__core.Immutable"/>
             </Annotations>
             <Annotations Target="cds_zui_flight_lk_o4.cds_zui_flight_lk_o4_Entities" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Org.OData.Capabilities.V1.BatchSupport">
